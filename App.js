@@ -10,6 +10,7 @@ import InputTask from './src/components/InputTask';
 import { useState } from 'react';
 import Task from './src/components/Task';
 import MotivationalMessage from './src/components/MotivationalMessage';
+import EmptyTaskList from './src/components/EmptyTaskList';
 
 export default function App() {
     const [tasks, setTasks] = useState([]);
@@ -61,19 +62,23 @@ export default function App() {
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
             <Header />
             <View style={styles.containerMain}>
-                <FlatList
-                    data={tasks}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item, index }) => (
-                        <Task
-                            key={index}
-                            task={item}
-                            index={index}
-                            onDeleteTask={removeTask}
-                            onToggleTaskCompletion={toggleTaskCompletion}
-                        />
-                    )}
-                />
+                {tasks.length === 0 ? (
+                    <EmptyTaskList />
+                ) : (
+                    <FlatList
+                        data={tasks}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item, index }) => (
+                            <Task
+                                key={index}
+                                task={item}
+                                index={index}
+                                onDeleteTask={removeTask}
+                                onToggleTaskCompletion={toggleTaskCompletion}
+                            />
+                        )}
+                    />
+                )}
                 <MotivationalMessage
                     visible={motivationalMessageVisible}
                     onHideMessage={handleHideMotivationalMessage}
